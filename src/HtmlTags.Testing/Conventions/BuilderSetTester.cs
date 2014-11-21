@@ -1,7 +1,7 @@
 using HtmlTags.Conventions;
 using NUnit.Framework;
 using Rhino.Mocks;
-using FubuTestingSupport;
+using Should;
 
 namespace HtmlTags.Testing.Conventions
 {

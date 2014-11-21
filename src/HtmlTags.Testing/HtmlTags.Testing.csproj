@@ -49,8 +49,8 @@
     <Reference Include="pnunit.framework">
       <HintPath>..\packages\NUnit\lib\pnunit.framework.dll</HintPath>
     </Reference>
-    <Reference Include="Rhino.Mocks">
-      <HintPath>..\packages\RhinoMocks\lib\Rhino.Mocks.dll</HintPath>
+    <Reference Include="Should">
+      <HintPath>..\packages\Should.1.1.20\lib\Should.dll</HintPath>
     </Reference>
     <Reference Include="StructureMap">
       <HintPath>..\packages\structuremap\lib\StructureMap.dll</HintPath>
@@ -67,24 +67,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\CommonAssemblyInfo.cs">
-      <Link>CommonAssemblyInfo.cs</Link>
-    </Compile>
     <Compile Include="CheckboxTagTester.cs" />
-    <Compile Include="Conventions\BuilderSetTester.cs" />
-    <Compile Include="Conventions\Fake.cs" />
-    <Compile Include="Conventions\FakeSubject.cs" />
-    <Compile Include="Conventions\HtmlConventionLibraryTester.cs" />
-    <Compile Include="Conventions\ConditionalTagBuilderPolicyTester.cs" />
-    <Compile Include="Conventions\LambdaTagModifierTester.cs" />
-    <Compile Include="Conventions\ServiceBuilderTester.cs" />
-    <Compile Include="Conventions\TagCategoryTester.cs" />
-    <Compile Include="Conventions\TagGeneratorFactoryTester.cs" />
-    <Compile Include="Conventions\TagGeneratorTester.cs" />
-    <Compile Include="Conventions\TagLibraryTester.cs" />
-    <Compile Include="Conventions\TagPlanTester.cs" />
-    <Compile Include="Conventions\TagRequestBuilderTester.cs" />
-    <Compile Include="Conventions\TagSubjectTester.cs" />
     <Compile Include="CssClassNameValidatorTester.cs" />
     <Compile Include="DLTagTester.cs" />
     <Compile Include="ElementTesters.cs" />
@@ -96,9 +79,11 @@
     <Compile Include="NestedNoClosingTagIssue.cs" />
     <Compile Include="ParentTagTester.cs" />
     <Compile Include="SelectTagTester.cs" />
+    <Compile Include="AssertionExtensions.cs" />
     <Compile Include="TableTagTester.cs" />
     <Compile Include="TagBuilderExtensionsTester.cs" />
     <Compile Include="TagListTester.cs" />
+    <Compile Include="UtilityExtenions.cs" />
     <Compile Include="VisibleForRoleTesting.cs" />
   </ItemGroup>
   <ItemGroup>

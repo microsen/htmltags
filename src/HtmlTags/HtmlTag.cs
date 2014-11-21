@@ -226,6 +226,18 @@ namespace HtmlTags
         /// </summary>
         /// <param name="child">The tag to add as a child of the parent.</param>
         /// <returns>The parent tag</returns>
+        public HtmlTag Preppend(HtmlTag child)
+        {
+            child._parent = this;
+            _children.Insert(0,child);
+            return this;
+        }
+
+        /// <summary>
+        /// Adds the given tag as the last child of the parent, and returns the parent.
+        /// </summary>
+        /// <param name="child">The tag to add as a child of the parent.</param>
+        /// <returns>The parent tag</returns>
         public HtmlTag Append(HtmlTag child)
         {
             child._parent = this;

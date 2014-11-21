@@ -1,6 +1,6 @@
 using HtmlTags.Conventions;
 using NUnit.Framework;
-using FubuTestingSupport;
+using Should;
 using Rhino.Mocks;
 
 namespace HtmlTags.Testing.Conventions

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using FubuTestingSupport;
+using Should;
 using NUnit.Framework;
 
 namespace HtmlTags.Testing

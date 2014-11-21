@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using FubuCore;
-using FubuTestingSupport;
+
+using Should;
 using NUnit.Framework;
 using System.Text;
 
@@ -624,6 +624,15 @@ namespace HtmlTags.Testing
         }
 
         [Test]
+        public void preppend_a_child_tag()
+        {
+            var tag = new HtmlTag("div")
+                .Append(new HtmlTag("span").Text("something"))
+                .Preppend(new HtmlTag("span").Text("something before"));
+            tag.ToString().ShouldEqual("<div><span>something before</span><span>something</span></div>");
+        }
+
+        [Test]
         public void create_a_new_tag_as_child_of_existing_tag()
         {
             var existing = new HtmlTag("div");
@@ -637,7 +646,7 @@ namespace HtmlTags.Testing
         {
             var parent = new HtmlTag("div");
             var resultOfAppend = parent.Append("p");
-            resultOfAppend.ShouldBeTheSameAs(parent);
+            resultOfAppend.ShouldBeSameAs(parent);
             parent.ToString().ShouldEqual("<div><p></p></div>");
         }
 
@@ -771,7 +780,7 @@ namespace HtmlTags.Testing
             var tagSource = (ITagSource) original;
             var allTags = tagSource.AllTags().ToArray();
             allTags.ShouldHaveCount(1);
-            allTags[0].ShouldBeTheSameAs(original);
+            allTags[0].ShouldBeSameAs(original);
         }
     }
 
@@ -822,7 +831,7 @@ namespace HtmlTags.Testing
             var nextSibling = new HtmlTag("span").Text("first brother");
             tag.After(nextSibling);
 
-            tag.After().ShouldBeTheSameAs(nextSibling);
+            tag.After().ShouldBeSameAs(nextSibling);
         }
 
         [Test]
@@ -832,7 +841,7 @@ namespace HtmlTags.Testing
             var nextSibling = new HtmlTag("span").Text("first brother");
             tag.After(nextSibling);
 
-            tag.Next.ShouldBeTheSameAs(nextSibling);
+            tag.Next.ShouldBeSameAs(nextSibling);
         }
     }
 
@@ -900,9 +909,9 @@ namespace HtmlTags.Testing
             var tag = new HtmlTag("a");
             var wrapped = tag.WrapWith("span");
 
-            wrapped.ShouldNotBeTheSameAs(tag);
+            wrapped.ShouldNotBeSameAs(tag);
             wrapped.TagName().ShouldEqual("span");
-            wrapped.FirstChild().ShouldBeTheSameAs(tag);
+            wrapped.FirstChild().ShouldBeSameAs(tag);
         }
 
         [Test]
@@ -911,8 +920,8 @@ namespace HtmlTags.Testing
             var tag = new HtmlTag("a");
             var wrapper = new HtmlTag("span");
 
-            tag.WrapWith(wrapper).ShouldBeTheSameAs(wrapper);
-            wrapper.FirstChild().ShouldBeTheSameAs(tag);
+            tag.WrapWith(wrapper).ShouldBeSameAs(wrapper);
+            wrapper.FirstChild().ShouldBeSameAs(tag);
         }
 
         [Test]
@@ -1110,7 +1119,7 @@ namespace HtmlTags.Testing
         public void append_html()
         {
             var tag = new HtmlTag("div");
-            tag.AppendHtml("<span>Hello</span>").ShouldBeTheSameAs(tag);
+            tag.AppendHtml("<span>Hello</span>").ShouldBeSameAs(tag);
             tag.AppendHtml(" Hey!");
 
             tag.ToString().ShouldEqual("<div><span>Hello</span> Hey!</div>");

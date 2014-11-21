@@ -1,5 +1,5 @@
 using System;
-using FubuTestingSupport;
+using Should;
 using NUnit.Framework;
 
 namespace HtmlTags.Testing
@@ -19,7 +19,7 @@ namespace HtmlTags.Testing
         [Test]
         public void head_contains_the_title()
         {
-            document.Head.FirstChild().Text().ShouldBeTheSameAs(document.Title);
+            document.Head.FirstChild().Text().ShouldBeSameAs(document.Title);
             document.ToString().ShouldContain("<head><title>the title</title></head>");
         }
 
@@ -184,7 +184,7 @@ namespace HtmlTags.Testing
         public void push_adds_to_the_stack()
         {
             HtmlTag element = document.Push("div/span").Text("hello");
-            document.Current.ShouldBeTheSameAs(element);
+            document.Current.ShouldBeSameAs(element);
             document.ToString().ShouldContain("<body><div><span>hello</span></div></body>");
         }
 
@@ -193,7 +193,7 @@ namespace HtmlTags.Testing
         {
             var element = new HtmlTag("p").Text("a paragraph");
             document.Push(element);
-            document.Current.ShouldBeTheSameAs(element);
+            document.Current.ShouldBeSameAs(element);
             document.ToString().ShouldContain("<body><p>a paragraph</p></body>");
         }
 
@@ -203,8 +203,8 @@ namespace HtmlTags.Testing
             HtmlTag attachedTag = document.Push("div");
             HtmlTag unattachedTag = new HtmlTag("span");
             document.PushWithoutAttaching(unattachedTag);
-            document.Body.FirstChild().ShouldBeTheSameAs(attachedTag);
-            document.Current.ShouldBeTheSameAs(unattachedTag);
+            document.Body.FirstChild().ShouldBeSameAs(attachedTag);
+            document.Current.ShouldBeSameAs(unattachedTag);
             document.ToString().ShouldEndWith("<body><div></div></body></html>");
         }
 
@@ -295,7 +295,7 @@ namespace HtmlTags.Testing
 
             document.Rewind();
 
-            document.Current.ShouldBeTheSameAs(document.Body);
+            document.Current.ShouldBeSameAs(document.Body);
         }
     }
 }

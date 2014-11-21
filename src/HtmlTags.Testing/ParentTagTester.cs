@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using FubuTestingSupport;
+using Should;
 using NUnit.Framework;
 
 namespace HtmlTags.Testing
@@ -24,6 +24,15 @@ namespace HtmlTags.Testing
         {
             var child = new HtmlTag("span");
             var tag = new HtmlTag("div").Append(child);
+            tag.ShouldEqual(child.Parent);
+            tag.Children[0].ShouldEqual(child);
+        }
+
+        [Test]
+        public void parent_property_is_set_correctly_using_preppend()
+        {
+            var child = new HtmlTag("span");
+            var tag = new HtmlTag("div").Preppend(child);
             tag.ShouldEqual(child.Parent);
             tag.Children[0].ShouldEqual(child);
         }
