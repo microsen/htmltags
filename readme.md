@@ -1,3 +1,5 @@
+#### The intent of this fork is to break some of the dependencies on Fubu libraries that make the use of conventions difficult to set up in standard MVC projects.
+
 # ![HtmlTags](https://github.com/DarthFubuMVC/htmltags/raw/master/logo/HtmlTags_Icon_32x32.png) HtmlTags
 
  .NET objects for generating HTML
