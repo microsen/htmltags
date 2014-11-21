@@ -1,8 +1,8 @@
 using System;
+using Moq;
 using Should;
 using HtmlTags.Conventions;
 using NUnit.Framework;
-using Rhino.Mocks;
 using System.Linq;
 
 namespace HtmlTags.Testing.Conventions
@@ -215,7 +215,7 @@ namespace HtmlTags.Testing.Conventions
         [Test]
         public void building_with_no_matching_builder_throws_exception()
         {
-            Exception<ArgumentOutOfRangeException>.ShouldBeThrownBy(() =>
+            new ArgumentOutOfRangeException().ShouldBeThrownBy(() =>
             {
                 build(new FakeSubject());
             });
@@ -228,7 +228,7 @@ namespace HtmlTags.Testing.Conventions
             theCategory.If(x => false).Build(x => new HtmlTag("div"));
             theCategory.If(x => false).Build(x => new HtmlTag("div"));
 
-            Exception<ArgumentOutOfRangeException>.ShouldBeThrownBy(() =>
+            new ArgumentOutOfRangeException().ShouldBeThrownBy(() =>
             {
                 build(new FakeSubject());
             });
@@ -248,12 +248,12 @@ namespace HtmlTags.Testing.Conventions
 
 
 
-            theCategory.PlanFor(subject1).ShouldBeTheSameAs(theCategory.PlanFor(subject2));
-            theCategory.PlanFor(subject1, "a").ShouldBeTheSameAs(theCategory.PlanFor(subject2, "a"));
-            theCategory.PlanFor(subject1, "b").ShouldBeTheSameAs(theCategory.PlanFor(subject2, "b"));
+            theCategory.PlanFor(subject1).ShouldBeSameAs(theCategory.PlanFor(subject2));
+            theCategory.PlanFor(subject1, "a").ShouldBeSameAs(theCategory.PlanFor(subject2, "a"));
+            theCategory.PlanFor(subject1, "b").ShouldBeSameAs(theCategory.PlanFor(subject2, "b"));
 
-            theCategory.PlanFor(subject1, "a").ShouldNotBeTheSameAs(theCategory.PlanFor(subject2, "b"));
-            theCategory.PlanFor(subject1, "b").ShouldNotBeTheSameAs(theCategory.PlanFor(subject2, "a"));
+            theCategory.PlanFor(subject1, "a").ShouldNotBeSameAs(theCategory.PlanFor(subject2, "b"));
+            theCategory.PlanFor(subject1, "b").ShouldNotBeSameAs(theCategory.PlanFor(subject2, "a"));
         }
 
     }
@@ -279,20 +279,20 @@ namespace HtmlTags.Testing.Conventions
         [SetUp]
         public void SetUp()
         {
-            b1 = MockRepository.GenerateMock<ITagBuilderPolicy<FakeSubject>>();
-            b2 = MockRepository.GenerateMock<ITagBuilderPolicy<FakeSubject>>();
-            b3 = MockRepository.GenerateMock<ITagBuilderPolicy<FakeSubject>>();
-            b4 = MockRepository.GenerateMock<ITagBuilderPolicy<FakeSubject>>();
-            b5 = MockRepository.GenerateMock<ITagBuilderPolicy<FakeSubject>>();
-            b6 = MockRepository.GenerateMock<ITagBuilderPolicy<FakeSubject>>();
-            b7 = MockRepository.GenerateMock<ITagBuilderPolicy<FakeSubject>>();
-            b8 = MockRepository.GenerateMock<ITagBuilderPolicy<FakeSubject>>();
+            b1 = new Mock<ITagBuilderPolicy<FakeSubject>>().Object;
+            b2 = new Mock<ITagBuilderPolicy<FakeSubject>>().Object;
+            b3 = new Mock<ITagBuilderPolicy<FakeSubject>>().Object;
+            b4 = new Mock<ITagBuilderPolicy<FakeSubject>>().Object;
+            b5 = new Mock<ITagBuilderPolicy<FakeSubject>>().Object;
+            b6 = new Mock<ITagBuilderPolicy<FakeSubject>>().Object;
+            b7 = new Mock<ITagBuilderPolicy<FakeSubject>>().Object;
+            b8 = new Mock<ITagBuilderPolicy<FakeSubject>>().Object;
 
-            m1 = MockRepository.GenerateMock<ITagModifier<FakeSubject>>();
-            m2 = MockRepository.GenerateMock<ITagModifier<FakeSubject>>();
-            m3 = MockRepository.GenerateMock<ITagModifier<FakeSubject>>();
-            m4 = MockRepository.GenerateMock<ITagModifier<FakeSubject>>();
-            m5 = MockRepository.GenerateMock<ITagModifier<FakeSubject>>();
+            m1 = new Mock<ITagModifier<FakeSubject>>().Object;
+            m2 = new Mock<ITagModifier<FakeSubject>>().Object;
+            m3 = new Mock<ITagModifier<FakeSubject>>().Object;
+            m4 = new Mock<ITagModifier<FakeSubject>>().Object;
+            m5 = new Mock<ITagModifier<FakeSubject>>().Object;
 
             category1 = new TagCategory<FakeSubject>();
             category1.Add(b1);

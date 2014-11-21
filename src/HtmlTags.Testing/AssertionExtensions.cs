@@ -29,11 +29,16 @@ namespace HtmlTags.Testing
 
         public static void ShouldHaveTheSameElementsAs<T>(this IEnumerable<T> actual, IEnumerable<T> expected)
         {
-            Assert.AreEqual(expected.Count(),actual.Count());
+            Assert.AreEqual(expected.Count(), actual.Count());
             foreach (var elem in actual)
             {
                 Assert.True(expected.Contains(elem));
             }
+        }
+
+        public static void ShouldHaveTheSameElementsAs<T>(this IEnumerable<T> actual, params T[] expected)
+        {
+            actual.ShouldHaveTheSameElementsAs(expected.Cast<T>());
         }
     }
 }

@@ -1,19 +1,28 @@
+using Moq;
+using Moq.Language.Flow;
 using Should;
 using HtmlTags.Conventions;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace HtmlTags.Testing.Conventions
 {
     [TestFixture]
-    public class TagGeneratorTester : InteractionContext<TagGenerator<FakeSubject>>
+    public class TagGeneratorTester // : InteractionContext<TagGenerator<FakeSubject>>
     {
         private FakeSubject theSubject;
         private HtmlTag theTag;
+        private TagGenerator<FakeSubject> _tagGenerator;
+        private Mock<ITagRequestBuilder> _tagRequestBuilder;
+        private ActiveProfile _activeProfile;
+        private Mock<ITagLibrary<FakeSubject>> _tagLibrary;
 
-        protected override void beforeEach()
+        [SetUp]
+        public void SetUp()
         {
-
+            _activeProfile = new ActiveProfile();
+            _tagRequestBuilder = new Mock<ITagRequestBuilder>();
+            _tagLibrary = new Mock<ITagLibrary<FakeSubject>>();
+            _tagGenerator = new TagGenerator<FakeSubject>(_tagLibrary.Object, _tagRequestBuilder.Object, _activeProfile);
             theSubject = new FakeSubject{
                 Name = "Jeremy",
                 Level = 10
@@ -24,21 +33,22 @@ namespace HtmlTags.Testing.Conventions
 
         private void expect(FakeSubject subject, string category = null, string profile = null)
         {
-            var thePlan = MockFor<ITagPlan<FakeSubject>>();
+            var thePlan = new Mock<ITagPlan<FakeSubject>>();
 
-            MockFor<ITagLibrary<FakeSubject>>().Stub(x => x.PlanFor(subject, profile: profile, category: category))
-                .Return(thePlan);
+            _tagLibrary.Setup(x => x.PlanFor(subject, profile, category))
+                .Returns(thePlan.Object);
 
 
-            thePlan.Stub(x => x.Build(theSubject)).Return(theTag);
+            thePlan.Setup(x => x.Build(theSubject)).Returns(theTag);
 
-            MockFor<ITagRequestBuilder>().Stub(x => x.Build(theSubject)).IgnoreArguments();
+          
+            _tagRequestBuilder.Setup(x => x.Build(It.IsAny<FakeSubject>()));
         }
 
         [Test]
         public void the_default_profile_is_Default()
         {
-            ClassUnderTest.ActiveProfile.ShouldEqual(TagConstants.Default);
+            _tagGenerator.ActiveProfile.ShouldEqual(TagConstants.Default);
         }
 
         [Test]
@@ -46,9 +56,9 @@ namespace HtmlTags.Testing.Conventions
         {
             expect(theSubject, TagConstants.Default, TagConstants.Default);
 
-            ClassUnderTest.Build(theSubject);
+            _tagGenerator.Build(theSubject);
 
-            MockFor<ITagRequestBuilder>().AssertWasCalled(x => x.Build(theSubject));
+           _tagRequestBuilder.Verify(x => x.Build(theSubject));
             
         }
 
@@ -57,17 +67,17 @@ namespace HtmlTags.Testing.Conventions
         {
             expect(theSubject, category:TagConstants.Default, profile:TagConstants.Default);
 
-            ClassUnderTest.Build(theSubject).ShouldBeTheSameAs(theTag);
+            _tagGenerator.Build(theSubject).ShouldBeSameAs(theTag);
         }
 
         [Test]
         public void call_build_with_the_profile_set()
         {
-            MockFor<ActiveProfile>().Push("A");
+            _activeProfile.Push("A");
 
             expect(theSubject, category: TagConstants.Default, profile: "A");
 
-            ClassUnderTest.Build(theSubject).ShouldBeTheSameAs(theTag);
+            _tagGenerator.Build(theSubject).ShouldBeSameAs(theTag);
         }
 
         [Test]
@@ -75,17 +85,17 @@ namespace HtmlTags.Testing.Conventions
         {
             expect(theSubject, category:"A", profile:TagConstants.Default);
 
-            ClassUnderTest.Build(theSubject, "A", null).ShouldBeTheSameAs(theTag);
+            _tagGenerator.Build(theSubject, "A", null).ShouldBeSameAs(theTag);
         }
 
         [Test]
         public void call_build_with_both_category_and_non_default_profile()
         {
-            MockFor<ActiveProfile>().Push("B");
+            _activeProfile.Push("B");
 
             expect(theSubject, category:"A", profile:"B");
 
-            ClassUnderTest.Build(theSubject, "A", null).ShouldBeTheSameAs(theTag);
+            _tagGenerator.Build(theSubject, "A", null).ShouldBeSameAs(theTag);
         }
 
         [Test]
@@ -93,7 +103,7 @@ namespace HtmlTags.Testing.Conventions
         {
             expect(theSubject, category: "A", profile: "B");
 
-            ClassUnderTest.Build(theSubject, "A", "B").ShouldBeTheSameAs(theTag);
+            _tagGenerator.Build(theSubject, "A", "B").ShouldBeSameAs(theTag);
         }
     }
 }

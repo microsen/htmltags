@@ -19,7 +19,7 @@ namespace HtmlTags.Testing.Conventions
 
             services2.FillInto(services1);
 
-            services1.Build<IChrome>().ShouldBeOfType<AChrome>();
+            services1.Build<IChrome>().ShouldBeType<AChrome>();
         }
     }
 

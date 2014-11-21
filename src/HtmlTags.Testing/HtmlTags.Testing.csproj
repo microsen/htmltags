@@ -40,6 +40,9 @@
     <Reference Include="FubuTestingSupport">
       <HintPath>..\packages\FubuTestingSupport\lib\FubuTestingSupport.dll</HintPath>
     </Reference>
+    <Reference Include="Moq">
+      <HintPath>..\packages\Moq.4.2.1409.1722\lib\net40\Moq.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit\lib\nunit.framework.dll</HintPath>
     </Reference>
@@ -68,6 +71,48 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CheckboxTagTester.cs" />
+    <Compile Include="Conventions\BuilderSetTester.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Conventions\ConditionalTagBuilderPolicyTester.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Conventions\Fake.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Conventions\FakeSubject.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Conventions\HtmlConventionLibraryTester.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Conventions\LambdaTagModifierTester.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Conventions\ServiceBuilderTester.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Conventions\TagCategoryTester.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Conventions\TagGeneratorFactoryTester.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Conventions\TagGeneratorTester.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Conventions\TagLibraryTester.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Conventions\TagPlanTester.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Conventions\TagRequestBuilderTester.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Conventions\TagSubjectTester.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="CssClassNameValidatorTester.cs" />
     <Compile Include="DLTagTester.cs" />
     <Compile Include="ElementTesters.cs" />

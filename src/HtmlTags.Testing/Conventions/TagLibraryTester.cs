@@ -1,7 +1,7 @@
 using HtmlTags.Conventions;
+using Moq;
 using NUnit.Framework;
 using Should;
-using Rhino.Mocks;
 
 namespace HtmlTags.Testing.Conventions
 {
@@ -53,34 +53,34 @@ namespace HtmlTags.Testing.Conventions
             var b1 = categoryB.Profile("b1");
             var b2 = categoryB.Profile("b2");
 
-            var visitor = MockRepository.GenerateMock<ITagLibraryVisitor<FakeSubject>>();
+            var visitor = new Mock<ITagLibraryVisitor<FakeSubject>>();
 
-            theLibrary.AcceptVisitor(visitor);
+            theLibrary.AcceptVisitor(visitor.Object);
 
-            visitor.AssertWasCalled(x => x.Category("a", categoryA));
-            visitor.AssertWasCalled(x => x.BuilderSet("a1", a1));
-            visitor.AssertWasCalled(x => x.BuilderSet("a2", a2));
+            visitor.Verify(x => x.Category("a", categoryA));
+            visitor.Verify(x => x.BuilderSet("a1", a1));
+            visitor.Verify(x => x.BuilderSet("a2", a2));
 
-            visitor.AssertWasCalled(x => x.Category("b", categoryB));
-            visitor.AssertWasCalled(x => x.BuilderSet("b1", b1));
-            visitor.AssertWasCalled(x => x.BuilderSet("b2", b2));
+            visitor.Verify(x => x.Category("b", categoryB));
+            visitor.Verify(x => x.BuilderSet("b1", b1));
+            visitor.Verify(x => x.BuilderSet("b2", b2));
         }
 
         [Test]
         public void accept_convention_visitor()
         {
-            var topVisitor = MockRepository.GenerateMock<IHtmlConventionVisitor>();
-            var childVisitor = MockRepository.GenerateMock<ITagLibraryVisitor<FakeSubject>>();
+            var topVisitor   = new Mock<IHtmlConventionVisitor>();
+            var childVisitor = new Mock<ITagLibraryVisitor<FakeSubject>>();
 
-            var library = MockRepository.GenerateMock<TagLibrary<FakeSubject>>();
+            var library = new Mock<TagLibrary<FakeSubject>>();
 
-            library.Expect(x => x.AcceptVisitor(childVisitor));
+            library.Setup(x => x.AcceptVisitor(childVisitor.Object));
 
-            topVisitor.Stub(x => x.VisitorFor<FakeSubject>()).Return(childVisitor);
+            topVisitor.Setup(x => x.VisitorFor<FakeSubject>()).Returns(childVisitor.Object);
 
-            library.AcceptVisitor(topVisitor);
+            library.Object.AcceptVisitor(topVisitor.Object);
 
-            library.AssertWasCalled(x => x.AcceptVisitor(childVisitor));
+            library.Verify(x => x.AcceptVisitor(childVisitor.Object));
         }
         
     }
@@ -104,18 +104,18 @@ namespace HtmlTags.Testing.Conventions
         [SetUp]
         public void SetUp()
         {
-            b1 = MockRepository.GenerateMock<ITagBuilderPolicy<FakeSubject>>();
-            b2 = MockRepository.GenerateMock<ITagBuilderPolicy<FakeSubject>>();
-            b3 = MockRepository.GenerateMock<ITagBuilderPolicy<FakeSubject>>();
-            b4 = MockRepository.GenerateMock<ITagBuilderPolicy<FakeSubject>>();
-            b5 = MockRepository.GenerateMock<ITagBuilderPolicy<FakeSubject>>();
-            b6 = MockRepository.GenerateMock<ITagBuilderPolicy<FakeSubject>>();
-            b7 = MockRepository.GenerateMock<ITagBuilderPolicy<FakeSubject>>();
+            b1 = new Mock<ITagBuilderPolicy<FakeSubject>>().Object;
+            b2 = new Mock<ITagBuilderPolicy<FakeSubject>>().Object;
+            b3 = new Mock<ITagBuilderPolicy<FakeSubject>>().Object;
+            b4 = new Mock<ITagBuilderPolicy<FakeSubject>>().Object;
+            b5 = new Mock<ITagBuilderPolicy<FakeSubject>>().Object;
+            b6 = new Mock<ITagBuilderPolicy<FakeSubject>>().Object;
+            b7 = new Mock<ITagBuilderPolicy<FakeSubject>>().Object;
 
-            m1 = MockRepository.GenerateMock<ITagModifier<FakeSubject>>();
-            m2 = MockRepository.GenerateMock<ITagModifier<FakeSubject>>();
-            m3 = MockRepository.GenerateMock<ITagModifier<FakeSubject>>();
-            m4 = MockRepository.GenerateMock<ITagModifier<FakeSubject>>();
+            m1 = new Mock<ITagModifier<FakeSubject>>().Object;
+            m2 = new Mock<ITagModifier<FakeSubject>>().Object;
+            m3 = new Mock<ITagModifier<FakeSubject>>().Object;
+            m4 = new Mock<ITagModifier<FakeSubject>>().Object;
 
             library1 = new TagLibrary<FakeSubject>();
 

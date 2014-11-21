@@ -1,39 +1,52 @@
+using System.Linq;
+using Moq;
 using Should;
 using HtmlTags.Conventions;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace HtmlTags.Testing.Conventions
 {
     [TestFixture]
-    public class TagGeneratorFactoryTester : InteractionContext<TagGeneratorFactory>
+    public class TagGeneratorFactoryTester //: InteractionContext<TagGeneratorFactory>
     {
         private ITagRequestActivator[] theActivators;
         private HtmlConventionLibrary theLibrary;
+        private TagGeneratorFactory _tagGeneratorFactory;
+        private ActiveProfile _activeProfile;
 
-        protected override void beforeEach()
+        [SetUp]
+        public void SetUp()
         {
-            theActivators = Services.CreateMockArrayFor<ITagRequestActivator>(5);
+            var mockActivators = new []
+                                 {
+                                     new Mock<ITagRequestActivator>(),
+                                     new Mock<ITagRequestActivator>(),
+                                     new Mock<ITagRequestActivator>(),
+                                     new Mock<ITagRequestActivator>(),
+                                     new Mock<ITagRequestActivator>(),
+                                 };
 
-            theActivators[0].Stub(x => x.Matches(typeof(FakeSubject))).Return(true);
-            theActivators[1].Stub(x => x.Matches(typeof(FakeSubject))).Return(false);
-            theActivators[2].Stub(x => x.Matches(typeof(FakeSubject))).Return(true);
-            theActivators[3].Stub(x => x.Matches(typeof(FakeSubject))).Return(false);
-            theActivators[4].Stub(x => x.Matches(typeof(FakeSubject))).Return(true);
+            mockActivators[0].Setup(x => x.Matches(typeof(FakeSubject))).Returns(true);
+            mockActivators[1].Setup(x => x.Matches(typeof(FakeSubject))).Returns(false);
+            mockActivators[2].Setup(x => x.Matches(typeof(FakeSubject))).Returns(true);
+            mockActivators[3].Setup(x => x.Matches(typeof(FakeSubject))).Returns(false);
+            mockActivators[4].Setup(x => x.Matches(typeof(FakeSubject))).Returns(true);
 
 
             theLibrary = new HtmlConventionLibrary();
-
-            Services.Inject(theLibrary);
+            theActivators = mockActivators.Select(x => x.Object).ToArray();
+//            Services.Inject(theLibrary);
+            _activeProfile = new ActiveProfile();
+            _tagGeneratorFactory = new TagGeneratorFactory(_activeProfile, theLibrary, null);
         }
 
         [Test]
         public void sets_the_active_profile_to_the_child_generators()
         {
-            MockFor<ActiveProfile>().Push("Blue");
+            _activeProfile.Push("Blue");
 
-            ClassUnderTest.GeneratorFor<FakeSubject>().ActiveProfile.ShouldEqual("Blue");
-            ClassUnderTest.GeneratorFor<SecondSubject>().ActiveProfile.ShouldEqual("Blue");
+            _tagGeneratorFactory.GeneratorFor<FakeSubject>().ActiveProfile.ShouldEqual("Blue");
+            _tagGeneratorFactory.GeneratorFor<SecondSubject>().ActiveProfile.ShouldEqual("Blue");
         }
     }
 }

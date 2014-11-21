@@ -1,27 +1,38 @@
-﻿using Should;
+﻿using System.Linq;
+using Moq;
+using Should;
 using HtmlTags.Conventions;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace HtmlTags.Testing.Conventions
 {
     [TestFixture]
-    public class TagRequestBuilderTester : InteractionContext<TagRequestBuilder>
+    public class TagRequestBuilderTester 
     {
-        private ITagRequestActivator[] theActivators;
-        private FakeSubject theSubject;
+        private ITagRequestActivator[] _theActivators;
+        private FakeSubject _theSubject;
+        private Mock<ITagRequestActivator>[] _mockActivators;
 
-        protected override void beforeEach()
+        [SetUp]
+        public void SetUp()
         {
-           theActivators = Services.CreateMockArrayFor<ITagRequestActivator>(5);
+           _mockActivators = new Mock<ITagRequestActivator>[]
+                             {
+                                 new Mock<ITagRequestActivator>(), 
+                                 new Mock<ITagRequestActivator>(), 
+                                 new Mock<ITagRequestActivator>(), 
+                                 new Mock<ITagRequestActivator>(), 
+                                 new Mock<ITagRequestActivator>(), 
+                             };
+           _mockActivators[0].Setup(x => x.Matches(typeof(FakeSubject))).Returns(true);
+           _mockActivators[1].Setup(x => x.Matches(typeof(FakeSubject))).Returns(false);
+           _mockActivators[2].Setup(x => x.Matches(typeof(FakeSubject))).Returns(true);
+           _mockActivators[3].Setup(x => x.Matches(typeof(FakeSubject))).Returns(false);
+           _mockActivators[4].Setup(x => x.Matches(typeof(FakeSubject))).Returns(true);
 
-            theActivators[0].Stub(x => x.Matches(typeof(FakeSubject))).Return(true);
-            theActivators[1].Stub(x => x.Matches(typeof(FakeSubject))).Return(false);
-            theActivators[2].Stub(x => x.Matches(typeof(FakeSubject))).Return(true);
-            theActivators[3].Stub(x => x.Matches(typeof(FakeSubject))).Return(false);
-            theActivators[4].Stub(x => x.Matches(typeof(FakeSubject))).Return(true);
+            _theActivators = _mockActivators.Select(x => x.Object).ToArray();
 
-            theSubject = new FakeSubject()
+            _theSubject = new FakeSubject()
                 {
                     Name = "HerpDerp",
                     Level = 99
@@ -31,13 +42,14 @@ namespace HtmlTags.Testing.Conventions
         [Test]
         public void should_only_call_activators_that_match()
         {
-            ClassUnderTest.Build(theSubject);
+            var builder = new TagRequestBuilder(_theActivators);
+            builder.Build(_theSubject);
 
-             theActivators[0].AssertWasCalled(x => x.Activate(theSubject));
-             theActivators[1].AssertWasNotCalled(x => x.Activate(theSubject));
-             theActivators[2].AssertWasCalled(x => x.Activate(theSubject));
-             theActivators[3].AssertWasNotCalled(x => x.Activate(theSubject));
-             theActivators[4].AssertWasCalled(x => x.Activate(theSubject));
+             _mockActivators[0].Verify(x => x.Activate(_theSubject));
+             _mockActivators[1].Verify(x => x.Activate(_theSubject), Times.Never);
+             _mockActivators[2].Verify(x => x.Activate(_theSubject));
+             _mockActivators[3].Verify(x => x.Activate(_theSubject), Times.Never);
+             _mockActivators[4].Verify(x => x.Activate(_theSubject));
         }
     }
 }
