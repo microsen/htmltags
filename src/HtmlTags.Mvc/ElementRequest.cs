@@ -36,7 +36,7 @@ namespace HtmlTags.Mvc
 
         public ElementRequest()
         {
-            AdditionalData = new Dictionary<string, object>();
+            AdditionalData = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
         }
 
         public override object ToToken()

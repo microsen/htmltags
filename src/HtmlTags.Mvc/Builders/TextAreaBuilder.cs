@@ -5,7 +5,12 @@
         public override bool Matches(ElementRequest request)
         {
             return request.IsForEditor()
-                   && request.IsType<string>()
+                   && IsTextArea(request);
+        }
+
+        public static bool IsTextArea(ElementRequest request)
+        {
+            return request.IsType<string>()
                    && (request.InputType == "multiline" || request.GetData<bool>("multiline"));
         }
 

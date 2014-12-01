@@ -5,9 +5,7 @@
         public override bool Matches(ElementRequest request)
         {
             return request.IsForDisplay()
-                   && request.IsType<string>()
-                   && (request.InputType == "multiline"
-                   || request.GetData<bool>("multiline"));
+                   && TextAreaBuilder.IsTextArea(request);
         }
 
         public override HtmlTag Build(ElementRequest request)
