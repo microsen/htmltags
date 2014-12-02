@@ -57,6 +57,7 @@ namespace HtmlTags.Mvc
         public static T GetValue<T>(this ElementRequest request)
         {
             if (request.Value == null) return default(T);
+            if (!request.Value.GetType().IsAssignableFrom(typeof (T))) return default(T);
             return (T)request.Value;
         }
 

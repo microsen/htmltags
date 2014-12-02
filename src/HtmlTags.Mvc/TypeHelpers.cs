@@ -6,6 +6,7 @@ namespace HtmlTags.Mvc
     {
         public static bool IsNumeric(this Type type)
         {
+            if (type == null) return false;
             if (type.IsEnum) return false;
             return Type.GetTypeCode(type).IsNumeric();
         }

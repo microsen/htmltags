@@ -32,7 +32,7 @@ namespace HtmlTags.Mvc.Tests
                               DisplayName = "Foo Bar"
                           }.SetType<bool>();
 
-            var result = request.Build();
+            var result = request.BuildTag();
             Assert.AreEqual("<div class=\"form-group col-md-5\"><label for=\"gooBar\">Foo Bar<input type=\"checkbox\" value=\"True\" id=\"gooBar\" name=\"FooBar\" class=\"form-control\" /></label></div>",
                result.ToString());
         }
@@ -48,7 +48,7 @@ namespace HtmlTags.Mvc.Tests
                               DisplayName = "Foo Bar"
                           }.SetType<string>();
 
-            var result = request.Build();
+            var result = request.BuildTag();
 
 
             Assert.AreEqual("<div class=\"form-group col-md-5\"><label for=\"fooBar\">Foo Bar<input type=\"email\" id=\"fooBar\" name=\"FooBarEmail\" class=\"form-control\" /></label></div>",
@@ -71,7 +71,7 @@ namespace HtmlTags.Mvc.Tests
                 Required = true
             }.SetType<string>();
 
-            var result = request.Build();
+            var result = request.BuildTag();
 
 
             Assert.AreEqual("<div class=\"form-group has-feedback has-error col-md-5\"><label for=\"fooBar\">Foo Bar<input type=\"email\" id=\"fooBar\" name=\"FooBarEmail\" class=\"input-validation-error form-control\" /><span class=\"glyphicon glyphicon-remove form-control-feedback\"></span></label><span class=\"text-danger\">Whoops</span></div>",

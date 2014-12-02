@@ -12,7 +12,9 @@ namespace HtmlTags.Mvc.Bootstrap
             EditorsIf(x => x.Required && x.ModelState != null)
                 .Modify(ApplyValidation);
 
-            EditorsAlways().Modify(x => x.OriginalTag.AddClass("form-control"));
+            EditorsIf(x => !x.IsType<bool>()).Modify(x => x.OriginalTag.AddClass("form-control"));
+
+            Import(new ButtonConventions());
         }
 
         

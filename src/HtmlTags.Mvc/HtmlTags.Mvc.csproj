@@ -81,9 +81,11 @@
     <Compile Include="Builders\TextBoxBuilder.cs" />
     <Compile Include="DefaultHtmlConventions.cs" />
     <Compile Include="DisplayHelpers.cs" />
+    <Compile Include="EditorHelpers.cs" />
     <Compile Include="ElementRequest.cs" />
     <Compile Include="ElementConventionLibrary.cs" />
     <Compile Include="ElementRequestExtensions.cs" />
+    <Compile Include="HtmlTagExtensions.cs" />
     <Compile Include="HtmlTagsConfiguration.cs" />
     <Compile Include="ModelMetadataHelpers.cs" />
     <Compile Include="Modifiers\ElementModifier.cs" />

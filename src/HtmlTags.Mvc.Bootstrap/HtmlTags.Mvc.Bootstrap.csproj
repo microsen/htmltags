@@ -45,7 +45,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BootstrapConventions.cs" />
+    <Compile Include="ButtonConventions.cs" />
+    <Compile Include="ButtonType.cs" />
     <Compile Include="Glyphicon.cs" />
+    <Compile Include="HtmlHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ValidationMessage.cs" />
   </ItemGroup>

@@ -19,7 +19,7 @@ namespace HtmlTags.Mvc.Builders
             {
                 var option = new HtmlTag("option");
                 option.Text(name);
-                if (name == request.GetData("value").ToString()) option.Attr("selected");
+                if (name == request.GetValue<string>()) option.Attr("selected");
                 option.Value((int)Enum.Parse(request.Type, name));
                 select.Children.Add(option);
             }

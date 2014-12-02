@@ -17,7 +17,7 @@ namespace HtmlTags.Mvc
             set
             {
                 _value = value;
-                if (Type == null)
+                if (Type == typeof(NullType))
                     Type = _value.GetType();
             }
         }
@@ -34,9 +34,14 @@ namespace HtmlTags.Mvc
         public string InputType { get; set; }
         public IDictionary<string, object> AdditionalData { get; set; }
 
+        private abstract class NullType
+        {
+            private NullType() { }
+        }
         public ElementRequest()
         {
             AdditionalData = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+            Type = typeof(NullType);
         }
 
         public override object ToToken()
@@ -44,15 +49,12 @@ namespace HtmlTags.Mvc
             return this;
         }
 
-        public override string ToString()
-        {
-            return this.Build().ToString();
-        }
+        
     }
 
     public static class ElementRequestHelpers
     {
-        public static HtmlTag Build(this ElementRequest request)
+        public static HtmlTag BuildTag(this ElementRequest request)
         {
             return HtmlTagsConfiguration.TagGeneratorFactory.GeneratorFor<ElementRequest>().Build(request);
         }
